@@ -12,7 +12,7 @@ public class TestController {
 
     @GetMapping
     public ResponseEntity test() {
-        System.out.println("testi");
+        System.out.println("test");
         return new ResponseEntity("test", HttpStatus.OK);
     }
 }

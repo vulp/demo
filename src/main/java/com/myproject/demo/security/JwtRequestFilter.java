@@ -1,7 +1,11 @@
 package com.myproject.demo.security;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -10,6 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -24,26 +30,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwtToken = null;
 
-
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
-            String test = jwtToken.substring(7);
-            System.out.println(jwtToken);
-            System.out.println(test);
-            try {
-                username = jwtTokenUtil.getUsernameFromToken(test);
-                System.out.println(username);
-                String asdf = jwtTokenUtil.getTestFromToken(test);
-                System.out.println(asdf);
-
-            } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
-            }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
         }
+
+        SecurityContextHolder.getContext().setAuthentication(null);
+        if (jwtTokenUtil.validateToken(jwtToken)) {
+            List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            Authentication authentication = new UsernamePasswordAuthenticationToken(jwtTokenUtil.getUsernameFromToken(jwtToken), "", authorities);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+
 
         filterChain.doFilter(request, response);
     }
