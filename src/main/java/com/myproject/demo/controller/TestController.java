@@ -23,7 +23,7 @@ public class TestController {
 
     @GetMapping
     public @ResponseBody
-    ResponseEntity test() throws Exception {
+    ResponseEntity findAllTests() throws Exception {
         System.out.println("find all tests");
         return new ResponseEntity(testService.findAllTests(), HttpStatus.OK);
     }
