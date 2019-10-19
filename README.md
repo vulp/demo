@@ -1,6 +1,8 @@
 # demo
 JWT testing
 
+Using https://jwt.io/ for token generating
+
 Expired Test token:
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTY5ODYwNDU4LCJleHAiOjE0MzA3NzMyMDAwMDAsInVzZXJuYW1lIjoidHR0In0.eYVSDSroIRlSaA4lWb1sPjn8JTd9nOPNSqlgeL9oLiE
 
